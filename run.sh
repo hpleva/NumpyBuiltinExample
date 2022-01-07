@@ -21,11 +21,11 @@ mkdir -p $outDir
 
 # define some useful variables
 filesDir=$scriptDir/files
-pyversion=2.7
-pythonPackageName=Python-2.7.18
-numpyPackageName=numpy-1.6.2
+pyversion=2.7.18
+pythonPackageName=Python-${pyversion}
+numpyversion=1.6.2
 pythonSourceDir=$outDir/$pythonPackageName
-numpySourceDir=$outDir/$numpyPackageName
+numpySourceDir=$outDir/numpy
 installDir=$outDir/install
 python=$installDir/bin/python
 freezeOutputDir=$outDir/freezeOutput
@@ -42,6 +42,7 @@ unset PYTHONSTARTUP
 extractAndBuildPython()
 {
   cd $outDir
+  curl -o ${filesDir}/Python-${pyversion}.tgz https://www.python.org/ftp/python/${pyversion}/Python-${pyversion}.tgz
   $tar -zxf $filesDir/$pythonPackageName.tgz
   cd $pythonSourceDir
 
@@ -62,8 +63,9 @@ extractAndBuildPython()
 extractAndBuildNumpy()
 {
   cd $outDir
-  $tar -zxf $filesDir/$numpyPackageName.tar.gz
-  cd $numpyPackageName
+  git clone --depth 1 --branch v${numpyversion} https://www.github.com/numpy/numpy.git
+  cd numpy
+  git submodule update --init
   $python ./setup.py install --prefix $installDir || exit
 }
 
@@ -75,7 +77,7 @@ runFreezeTool()
   ignores="-X codecs -X copy -X distutils -X encodings -X locale -X macpath -X ntpath -X os2emxpath -X popen2 -X pydoc  -X readline -X _warnings"
 
   export PYTHONHOME=$installDir
-  export PYTHONPATH=$installDir/lib/python$pyversion/site-packages
+  export PYTHONPATH=$installDir/lib/python${pyversion%.*}/site-packages
 
   $python -S $freezeScript -o $freezeOutputDir -p $pythonSourceDir $ignores $targetScript || exit
 
@@ -95,8 +97,8 @@ buildHelloNumpy()
   cp -r $filesDir/helloNumpy ./
   cd helloNumpy
 
-  pythonInclude=$installDir/include/python$pyversion
-  pythonLibrary=$installDir/lib/libpython$pyversion.a
+  pythonInclude=$installDir/include/python${pyversion%.*}
+  pythonLibrary=$installDir/lib/libpython${pyversion%.*}.a
   numpyBuildDir=$numpySourceDir/build
 
   # glob numpy .o files and frozen .c source files
