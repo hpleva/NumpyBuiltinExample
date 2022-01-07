@@ -27,7 +27,11 @@ numpyversion=1.6.2
 pythonSourceDir=$outDir/$pythonPackageName
 numpySourceDir=$outDir/numpy
 installDir=$outDir/install
-python=$installDir/bin/python
+if [ "${pyversion:0:1}" == "3" ]; then
+    python=$installDir/bin/python3
+else
+    python=$installDir/bin/python
+fi
 freezeOutputDir=$outDir/freezeOutput
 
 # remove python related environment variables

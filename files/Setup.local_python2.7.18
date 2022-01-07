@@ -1,6 +1,5 @@
-# Edit this file for local setup changes
-
-#cStringIO cStringIO.c
+*static*
+cStringIO cStringIO.c
 cPickle cPickle.c
 _collections _collectionsmodule.c
 operator operator.c
