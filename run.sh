@@ -10,7 +10,7 @@ make=`which make`
 patch=`which patch`
 head=`which head`
 tar=`which tar`
-makeParallel=-j8
+makeParallel=-j6
 
 # get the location of this script
 scriptDir=$(cd $(dirname $0) && pwd)
@@ -42,7 +42,9 @@ unset PYTHONSTARTUP
 extractAndBuildPython()
 {
   cd $outDir
-  curl -o ${filesDir}/Python-${pyversion}.tgz https://www.python.org/ftp/python/${pyversion}/Python-${pyversion}.tgz
+  if [ ! -f "${filesDir}/Python-${pyversion}.tgz" ]; then
+      curl -o ${filesDir}/Python-${pyversion}.tgz https://www.python.org/ftp/python/${pyversion}/Python-${pyversion}.tgz
+  fi
   $tar -zxf $filesDir/$pythonPackageName.tgz
   cd $pythonSourceDir
 
@@ -50,7 +52,7 @@ extractAndBuildPython()
   $patch -p0 < $filesDir/patch-python-import.diff
 
   # setup builtin modules
-  cp $filesDir/Setup.local ./Modules/
+  cp $filesDir/Setup.local${pyversion} ./Modules/
 
   # "install" is not a valid option in newer Python versions:
   # ./configure install --disable-shared --prefix $installDir || exit
@@ -63,6 +65,7 @@ extractAndBuildPython()
 extractAndBuildNumpy()
 {
   cd $outDir
+  rm -rf numpy
   git clone --depth 1 --branch v${numpyversion} https://www.github.com/numpy/numpy.git
   cd numpy
   git submodule update --init

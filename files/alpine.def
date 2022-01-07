@@ -8,7 +8,7 @@ Stage: build
 
 %post
     apk update
-    apk --no-cache --update-cache add vim git gcc make tree bash patch musl-dev build-base
+    apk --no-cache --update-cache add vim git gcc make tree bash patch musl-dev build-base zlib-dev openssl-dev libffi-dev
     cd /usr
     git clone https://github.com/hpleva/NumpyBuiltinExample.git
 
