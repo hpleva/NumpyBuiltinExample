@@ -22,7 +22,7 @@ mkdir -p $outDir
 # define some useful variables
 filesDir=$scriptDir/files
 pyversion=2.7
-pythonPackageName=Python-2.7.3
+pythonPackageName=Python-2.7.12
 numpyPackageName=numpy-1.6.2
 pythonSourceDir=$outDir/$pythonPackageName
 numpySourceDir=$outDir/$numpyPackageName
@@ -51,7 +51,9 @@ extractAndBuildPython()
   # setup builtin modules
   cp $filesDir/Setup.local ./Modules/
 
-  ./configure install --disable-shared --prefix $installDir || exit
+  # "install" is not a valid option in newer Python versions:
+  # ./configure install --disable-shared --prefix $installDir || exit
+  ./configure --disable-shared --prefix $installDir || exit
   $make $makeParallel || exit
   $make install || exit
 }

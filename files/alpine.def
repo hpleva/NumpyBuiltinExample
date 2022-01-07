@@ -1,0 +1,24 @@
+Bootstrap: docker
+# From: python:2.7-alpine
+From: alpine:3.1
+
+Stage: build
+
+%files
+
+%post
+    apk update
+    apk --no-cache --update-cache add vim git gcc make tree bash patch musl-dev build-base
+    cd /usr
+    git clone https://github.com/hpleva/NumpyBuiltinExample.git
+
+
+
+%environment
+    # export LC_ALL=C
+    # py3-numpy is installed in a location which Python doesn't find by default:
+    # export PYTHONPATH=/usr/lib/python3.9/site-packages
+    # export CARGO_HOME=/usr/.cargo
+    # export RUSTUP_HOME=/usr/.rustup
+    # source /usr/.cargo/env
+
