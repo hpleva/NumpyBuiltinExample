@@ -26,4 +26,4 @@ strop stropmodule.c
 #_random _randommodule.c	# Random number generator
 #_elementtree -I$(srcdir)/Modules/expat -DHAVE_EXPAT_CONFIG_H -DUSE_PYEXPAT_CAPI _elementtree.c	# elementtree accelerator
 #_pickle _pickle.c	# pickle accelerator
-#datetime datetimemodule.c	# date/time type
+datetime datetimemodule.c	# date/time type
