@@ -22,7 +22,7 @@ mkdir -p $outDir
 # define some useful variables
 filesDir=$scriptDir/files
 pyversion=2.7
-pythonPackageName=Python-2.7.12
+pythonPackageName=Python-2.7.18
 numpyPackageName=numpy-1.6.2
 pythonSourceDir=$outDir/$pythonPackageName
 numpySourceDir=$outDir/$numpyPackageName
@@ -108,7 +108,7 @@ buildHelloNumpy()
     linkFlags=""
     requiredBlasLibrary="-framework Accelerate"
   else
-    linkFlags="-Xlinker -export-dynamic"
+    linkFlags="-static -Xlinker -export-dynamic"
     requiredBlasLibrary=""
   fi
 
