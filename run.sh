@@ -56,7 +56,7 @@ extractAndBuildPython()
   $patch -p0 < $filesDir/patch-python-import.diff
 
   # setup builtin modules
-  cp $filesDir/Setup.local${pyversion} ./Modules/
+  cp $filesDir/Setup.local_python${pyversion} ./Modules/Setup.local
 
   # "install" is not a valid option in newer Python versions:
   # ./configure install --disable-shared --prefix $installDir || exit
